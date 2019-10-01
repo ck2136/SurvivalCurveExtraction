@@ -158,7 +158,7 @@ There are several ways that one could start the dashboard application:
   1. Use [shinyapps.io](https://pharmacoecon.shinyapps.io/SurvivalCurveExtraction/) 
   2. Clone/Fork the [github repo](https://github.com/ck2136/SurvivalCurveExtraction) and run the application using [Rstudio](https://rstudio.com/products/rstudio/download/#download)
   
-Since it's easier to use the web-application. I'm going to go with the server. Click to access [shinyapps.io](pharmacoecon.shinyapps.io/SurvivalCurveExtraction)
+Since it's easier to use the web-application. I'm going to go with the server. Click to access [shinyapps.io](https://pharmacoecon.shinyapps.io/SurvivalCurveExtraction)
 
 In the Introduction tab there is a guideline that everyone should be able to follow. If there are any questions please do not hesitate to contact [me](mailto:chong.kim@ucdenver.edu)
 

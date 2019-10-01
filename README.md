@@ -274,7 +274,7 @@ There are several ways that one could start the dashboard application:
 
 Since it’s easier to use the web-application. I’m going to go with the
 server. Click to access
-[shinyapps.io](pharmacoecon.shinyapps.io/SurvivalCurveExtraction)
+[shinyapps.io](https://pharmacoecon.shinyapps.io/SurvivalCurveExtraction)
 
 In the Introduction tab there is a guideline that everyone should be
 able to follow. If there are any questions please do not hesitate to
