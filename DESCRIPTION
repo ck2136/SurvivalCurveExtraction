@@ -1,0 +1,35 @@
+Package: SurvivalCurveExtraction
+Title: Exctract Survival Distribution Parameters from Digitized Curves
+Version: 0.0.0.9000
+Authors@R: person('Chong', 'Kim', email = 'chong.kim@ucdenver.edu', role = c('cre', 'aut'))
+Description: Digitized curves are used to generate simulated survival curve distributions. Multiple survival curves and distributional parameters are estimated.
+License: MIT + file LICENSE
+Encoding: UTF-8
+LazyData: true
+Imports: 
+    shiny,
+    golem,
+    processx,
+    attempt,
+    DT,
+    glue,
+    htmltools,
+    shinydashboard,
+    shinyAce,
+    formattable,
+    survival,
+    splines,
+    MASS,
+    flexsurv,
+    dplyr,
+    plotly,
+    ggplot2,
+    ggfortify
+RoxygenNote: 6.1.0
+URL: https://github.com/ck2136/SurvivalCurveExtraction
+BugReports: https://github.com/ck2136/SurvivalCurveExtraction/issues
+Suggests: 
+    testthat (>= 2.1.0),
+    knitr,
+    rmarkdown
+VignetteBuilder: knitr
