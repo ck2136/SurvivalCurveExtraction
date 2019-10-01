@@ -25,7 +25,8 @@ Imports:
     plotly,
     ggplot2,
     ggfortify,
-    survminer
+    survminer,
+    pkgload
 RoxygenNote: 6.1.1
 URL: https://github.com/ck2136/SurvivalCurveExtraction
 BugReports: https://github.com/ck2136/SurvivalCurveExtraction/issues
