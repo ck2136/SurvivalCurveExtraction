@@ -12,7 +12,7 @@ knitr::opts_chunk$set(
   out.width = "100%"
 )
 library("pacman")
-p_load(here, dplyr)
+p_load(here, dplyr, knitr, SurvivalCurveExtraction)
 ```
 
 # SurvivalCurveExtraction
@@ -21,7 +21,7 @@ p_load(here, dplyr)
 [![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
 <!-- badges: end -->
 
-This repository contains the codes necessary to produce an interactive [shiny dash board](https://pharmacoecon.shinyapps.io/SurvivalCurveExtraction/). The original [Guyot et alâ€™s](https://bmcmedresmethodol.biomedcentral.com/articles/10.1186/1471-2288-12-9) code is embedded in the dashboard. The original purpose of the document was to serve as the analysis toolkit for generating survival distribution parameters and fit statistics for health technology assessment (HTA) or cost-effectiveness analysis of pharmaceutical interventions. 
+This repository contains the codes necessary to produce an interactive [shiny dash board](https://pharmacoecon.shinyapps.io/SurvivalCurveExtraction/). The original [Guyot et al's](https://bmcmedresmethodol.biomedcentral.com/articles/10.1186/1471-2288-12-9) code is embedded in the dashboard. The original purpose of the document was to serve as the analysis toolkit for generating survival distribution parameters and fit statistics for health technology assessment (HTA) or cost-effectiveness analysis of pharmaceutical interventions. 
 
 ## Purpose
 
@@ -147,7 +147,7 @@ df2 %>%
   
   + Column 5: Number at risk.
   
-The values in each of the columns should reflect that of the values that are from the number at risk information from the original survival curve. At $t = 0$, the number at risk for the Olaparib group is $260$. So our interval for number at risk during this period will be $[0, 3)$. The Lower index value (**Column 3**) should correspond to the index value in `df$edited$Index` which is 1. The Upper index value (**Colun 4**) should be just before 3, in our case therefore should be $t = 2.5$ which corresponds to $\text{index} = 6$. Therefore, following along this logic, the user needs to create a **.csv** file that looks like `df2`.
+The values in each of the columns should reflect that of the values that are from the number at risk information from the original survival curve. At $t = 0$, the number at risk for the Olaparib group is $260$. So our interval for number at risk during this period will be $[0, 3)$. The Lower index value (**Column 3**) should correspond to the index value in `df$edited$Index` which is 1. The Upper index value (**Column 4**) should be just before 3, in our case therefore should be $t = 2.5$ which corresponds to $\text{index} = 6$. Therefore, following along this logic, the user needs to create a **.csv** file that looks like `df2`.
 
 Once the file has been created, we are ready to insert these **.csv** files into the dashboard!
 
@@ -158,7 +158,9 @@ There are several ways that one could start the dashboard application:
   1. Use [shinyapps.io](https://pharmacoecon.shinyapps.io/SurvivalCurveExtraction/) 
   2. Clone/Fork the [github repo](https://github.com/ck2136/SurvivalCurveExtraction) and run the application using [Rstudio](https://rstudio.com/products/rstudio/download/#download)
   
-Since it's easier to use the web-application. I'm going to go with the server.
+Since it's easier to use the web-application. I'm going to go with the server. Click to access [shinyapps.io](pharmacoecon.shinyapps.io/SurvivalCurveExtraction)
+
+In the Introduction tab there is a guideline that everyone should be able to follow. If there are any questions please do not hesitate to contact [me](mailto:chong.kim@ucdenver.edu)
 
 ## Code of Conduct
 

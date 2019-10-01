@@ -10,6 +10,8 @@
 
 monotone_check <- function(df1) {
   
+  df1 <- df1[complete.cases(df1),]
+  
   # Change 1st S(t) value to 1
   df1$V2[1] <- 1
   
