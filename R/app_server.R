@@ -1,4 +1,17 @@
 #' @import shiny
+#' @import shinydashboard
+#' @import flexsurv
+#' @import DT
+#' @import ggplot2
+#' @import ggfortify
+#' @import plotly
+#' @import dplyr
+#' @import MASS
+#' @import splines
+#' @import survival
+#' @import formattable
+#' @import shinyAce
+#' @import survminer
 app_server <- function(input, output,session) {
   # List the first level callModules here
   
@@ -10,7 +23,7 @@ app_server <- function(input, output,session) {
       # User has not uploaded a file yet
       return(NULL)
     }
-    read.csv(infile$datapath)[1:max(na.omit(read.csv(infile$datapath))),]
+    read.csv(infile$datapath, header=FALSE)[1:max(na.omit(read.csv(infile$datapath, header = FALSE))),]
     
   })
   
@@ -24,28 +37,50 @@ app_server <- function(input, output,session) {
     
   })
   
+  cleandata <- reactive({
+    if (is.null(filedata1())) {
+      # User has not uploaded a file yet
+      return(NULL)
+    }
+    dt <- monotone_check(filedata1())
+    dt
+  })
+  
   # This allows user to select variables in the filedata
   # First variable will be the survival probability variable (Column 5 in the excel sheet)
   output$Variables1 <- renderUI({
-    selectInput('vars1', 'S(t): Select the variable/column that represents the survival probabilities', names(filedata1()) , multiple = FALSE)
+    selectInput('vars1', 'Select the variable that represents the survival probabilities (i.e. S(t))', names(cleandata()) , multiple = FALSE)
   })
   
   
   # Second variable will be the time variable (Column 2 in the excel sheet)
   output$Variables2 <- renderUI({
-    selectInput('vars2', 'Time: Select the variable/column that represents the time', names(filedata1()) , multiple = FALSE)
+    selectInput('vars2', 'Select the variable that represents time (t)', names(cleandata()) , multiple = FALSE)
+  })
+  
+  
+  # output files based on user choice
+  output$dataView <- renderDataTable({
+    if(input$dataView == "cd"){
+      outdf <- datatable(cleandata())
+    } else if(input$dataView == "ipd") {
+      outdf <- IPD()
+    } else if(input$dataView == "nar") {
+      outdf <- filedata2()
+    }
+    outdf
   })
   
   #This previews the CSV data files
-  output$filetable1 <- renderDataTable({
-    filedata1()
+  output$filetable1 <- renderTable({
+    as.data.frame(cleandata())
   })
   
   output$IPDtable <- renderDataTable({
     IPD()
   })
   
-  output$filetable2 <- renderDataTable({
+  output$filetable2 <- renderTable({
     filedata2()
   })
   
@@ -64,8 +99,8 @@ app_server <- function(input, output,session) {
   #Output IPD
   IPD <- reactive({
     #Read in survival times 
-    t.S<-filedata1()[,input$vars2]
-    S<-filedata1()[,input$vars1]
+    t.S<-cleandata()[,input$vars2]
+    S<-cleandata()[,input$vars1]
     
     #Read in published numbers at risk, n.risk, at time, t.risk, lower and upper
     # indexes for time interval
@@ -338,7 +373,7 @@ app_server <- function(input, output,session) {
       lines(splinefl(), col = "chocolate", ci = ifelse(input$confint == 'yes', TRUE, FALSE))
       
       if(input$wpdcurve == 'yes'){
-        lines(filedata1()[,input$vars2],filedata1()[,input$vars1], col = "cyan")
+        lines(cleandata()[,input$vars2],cleandata()[,input$vars1], col = "cyan")
         ## Add legends
         legend(x = "bottomleft",
                legend = c("Kaplan-Meier","Exp" ,"Gen-Gamma", "Log-logistic", "Weibull", "Log-Normal", "Gompertz", "Spline","Digitized"),
@@ -377,7 +412,7 @@ app_server <- function(input, output,session) {
       lines(gompert(), color = "purple", ci = ifelse(input$confint == 'yes', TRUE, FALSE))
       
       if(input$wpdcurve == 'yes'){
-        lines(filedata1()[,input$vars2],filedata1()[,input$vars1], col = "cyan")
+        lines(cleandata()[,input$vars2],cleandata()[,input$vars1], col = "cyan")
         
         # Add legends w Digitized curve
         legend(x = "bottomleft",
@@ -395,10 +430,27 @@ app_server <- function(input, output,session) {
     } 
   }
   
+  plot_org <- function(){
+    plot(filedata1()[,1], filedata1()[,2], xlab = "Time", ylab = "S(t)", main = "Original Data")
+  }
+  
+  plot_clean <- function(){
+    plot(cleandata()[,1], cleandata()[,2], xlab = "Time", ylab = "S(t)", main = "Monotone checked and cleaned Data")
+  }
+  
   output$survplot <- renderPlot({
     print(makeplot())
   })
   
+  output$orgplot <- renderPlot({
+    par(mfrow=c(1,2))
+    print(plot_org());print(plot_clean())
+  })
+  
+    
+  # output$OriginalPlot <- renderPlot(
+  #   print(makeorgplot())
+  # )
   
   # Parameter Estimates
   
@@ -445,6 +497,8 @@ app_server <- function(input, output,session) {
       }), data.frame, stringsAsFactors=FALSE))
       names(aictable) <- c("Exponential","Weibull","Log-normal","Log-logistic","Generalized-Gamma","Gompertz", "Spline")
       rownames(aictable) <- c("AIC", "BIC")
+      aictable <- data.frame(t(aictable))
+      aictable$distribution <- c("Exponential","Weibull","Log-normal","Log-logistic","Generalized-Gamma","Gompertz", "Spline")
     } else {
       x <- list(exp(), weibfl(), lnormfl(), llogfl(), gengam(), gompert())
       aictable <- do.call(cbind, lapply(lapply(x, function(x) {
@@ -452,8 +506,11 @@ app_server <- function(input, output,session) {
       }), data.frame, stringsAsFactors=FALSE))
       names(aictable) <- c("Exponential","Weibull","Log-normal","Log-logistic","Generalized-Gamma","Gompertz")
       rownames(aictable) <- c("AIC", "BIC")
+      aictable <- data.frame(t(aictable))
+      aictable$distribution <- c("Exponential","Weibull","Log-normal","Log-logistic","Generalized-Gamma","Gompertz")
     }
-    t(aictable)
+    aictable
+    # data.frame(t(aictable))
   })
   
   output$fitstat <- renderDataTable({

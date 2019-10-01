@@ -11,6 +11,8 @@ knitr::opts_chunk$set(
   fig.path = "man/figures/README-",
   out.width = "100%"
 )
+library("pacman")
+p_load(here, dplyr)
 ```
 
 # SurvivalCurveExtraction
@@ -42,7 +44,7 @@ install.packages("SurvivalCurveExtraction")
 This package won't likely be released so...
 
 ```{r}
-devtools::install_github("ck2136/SurvivalCurveExtraction")
+# devtools::install_github("ck2136/SurvivalCurveExtraction")
 ```
 
 ## Directions
@@ -58,7 +60,7 @@ There ar 3 main steps for extracting survival distribution parameters:
   1. **Before** embarking on the use of the dashboard, the user is required to have the necessary data files extracted from previous studies as described in [Guyot et al](https://bmcmedresmethodol.biomedcentral.com/articles/10.1186/1471-2288-12-9). The first dataset should look like below:
 
 ```{r}
-df1 <- read.csv(paste0(here(),"/data/moore_b_ola.csv"), header = FALSE)
+df1 <- read.csv(paste0(here(),"/data-raw/digitized_data.csv"), header = FALSE)
 df1 %>%
   head %>%
   kable 
@@ -68,34 +70,34 @@ The first 6 rows of the **.csv** file is shown to illustrate that as $t$ goes fr
 
 This file can be extracted from the website [WebPlotDigitizer](https://automeris.io/WebPlotDigitizer/). In fact let's walk through one example of a study using [maintenance Olaparib in patients with newly diagnosed advanced Ovarian cancer](https://www.nejm.org/doi/full/10.1056/NEJMoa1810858). The survival curve that we're going to try to extract is the Progression Free Survival (PFS) curve for patients that were using Olaparib.
 
-![](figures/moore_b_ola.png)
+![](inst/app/www/moore_b_ola.png)
 
 Once you download/extract the file from the website, you now want to click the `Launch` button and load the image. You'll see a screen like below:
 
-![](figures/CE_2.png)
+![](inst/app/www/CE_2.png)
 
 Once the file is loaded and you select the Plot Type as `2D (X-Y) Plot` click on the `Align Axes` button.
 
-![](figures/wpd_axis.png)
+![](inst/app/www//wpd_axis.png)
 
 The next step is to select the points `X1`,`X2`, `Y1`, and `Y2` and then input the numeric values as a reference point.
 
-![](figures/wpd_axes2.png)
+![](inst/app/www/wpd_axes2.png)
 
 `Proceed`! **TIP:** Once you select each point, you can move the points around (in order to make better calibrations) by using the keyboard arrow keys.
 
 Once you are done with selecting each of the points mentioned above, click on the `Complete!` button. You'll see a box appear where now you enter in the values for each of the points `X1`,`X2`, `Y1`, and `Y2`. For this exercise we want $X1 = Y1 = 0$ and $X2 = 57$ and $Y2 = 1$.
 
-![](figures/wpd_axes3.png)
+![](inst/app/www//wpd_axes3.png)
 
 
 Now that we've set the reference points for our data points, now we need to select the data points that is to be recorded. On the right had side of the screen there are 4 buttons next to `Mask`. Usually for these exercises I use a pen and draw over the line that I'll be extracting as such:
 
-![](figures/wpd_extract.png)
+![](inst/app/www/wpd_extract.png)
 
 Once you've drawn over the curve make sure the `Foreground Color` is the appropriate color of the data points.
 
-![](figures/wpd_foreground.png)
+![](inst/app/www/wpd_foreground.png)
 
 Now click on `Run` and you'll see that red dots are generated! We're almost done! At this point we can play around with the `Algorithm` to determine if we want to add more points or reduce the number of points. Once you feel ready, we can go to the left hand side of the website and click on `View Data`. Since we aren't too concerned about going down to $>5$ digits, I usually format the code to have $5$ fixed digits. (Click on the `Format` button after selecting `Fixed` Digits). Then ou can download the **.csv** file. I've named it `moore_b_ola.csv`.
 
@@ -119,7 +121,6 @@ It's clear that the second data point has a greater $S(t)$ value compared to the
 df1 %>%
   head
 
-source(paste0(here(),"/R/monotone_check.R"))
 df1edited <- monotone_check(df1)
 par(mfrow=c(1,2))
 plot(df1$V1, df1$V2, xlab = "t", ylab = "S(t)", main = "Original")
@@ -129,7 +130,7 @@ plot(df1edited$Time, df1edited$`S(t)`, xlab = "t", ylab = "S(t)", main = "Data C
 Once the data has been checked for monotone decreasing, we can go ahead and use the cleaned `df1edited` file as our first file indicated by Guyot et al. The next **.csv** file needs to look like below:
 
 ```{r}
-df2 <- read.csv(paste0(here(),"/data/moore_b_ola_nrisk.csv"), header = TRUE)
+df2 <- read.csv(paste0(here(),"/data-raw/digitized_nrisk.csv"), header = TRUE)
 df2 %>%
   kable 
 ```

@@ -12,19 +12,19 @@ golem::add_module( name = "my_other_module" ) # Name of the module
 
 ## 2.2 Add dependencies
 
-usethis::use_package( "thinkr" ) # To call each time you need a new package
-usethis::use_package( "shinydashboard" ) # To call each time you need a new package
-usethis::use_package( "DT" ) # To call each time you need a new package
-usethis::use_package( "shinyAce" ) # To call each time you need a new package
-usethis::use_package( "formattable" ) # To call each time you need a new package
-usethis::use_package( "survival" ) # To call each time you need a new package
-usethis::use_package( "splines" ) # To call each time you need a new package
+usethis::use_package( "shinydashboard" ) # dashboard packge
+usethis::use_package( "DT" ) # for viewing tables
+usethis::use_package( "shinyAce" ) # For inputting text
+usethis::use_package( "formattable" ) # For formatting table
+usethis::use_package( "survival" ) # For survival analysis
+usethis::use_package( "splines" ) # Addition of spliens to model
 usethis::use_package( "MASS" ) # To call each time you need a new package
 usethis::use_package( "flexsurv" ) # To call each time you need a new package
 usethis::use_package( "dplyr" ) # To call each time you need a new package
 usethis::use_package( "plotly" ) # To call each time you need a new package
 usethis::use_package( "ggplot2" ) # To call each time you need a new package
 usethis::use_package( "ggfortify" ) # To call each time you need a new package
+usethis::use_package( "survminer" ) # To call each time you need a new package
 
 ## 2.3 Add tests
 
