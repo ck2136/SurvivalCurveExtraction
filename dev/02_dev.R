@@ -51,6 +51,8 @@ devtools::build_vignettes()
 usethis::use_github()
 usethis::use_travis()
 usethis::use_appveyor()
+usethis::browse_github_token()
+usethis::edit_r_environ()
 
 # You're now set! 
 # go to dev/03_deploy.R
