@@ -27,6 +27,17 @@ app_server <- function(input, output,session) {
     
   })
   
+  output$data1exists <- reactive({
+    !is.null(input$datafile1)
+  })
+  
+  output$data2exists <- reactive({
+    !is.null(input$datafile2)
+  })
+  
+  outputOptions(output, "data1exists", suspendWhenHidden = FALSE)
+  outputOptions(output, "data2exists", suspendWhenHidden = FALSE)
+  
   filedata2 <- reactive({
     infile <- input$datafile2
     if (is.null(infile)) {
@@ -509,7 +520,7 @@ app_server <- function(input, output,session) {
       aictable <- data.frame(t(aictable))
       aictable$distribution <- c("Exponential","Weibull","Log-normal","Log-logistic","Generalized-Gamma","Gompertz")
     }
-    aictable
+    aictable[, c(3,1,2)]
     # data.frame(t(aictable))
   })
   

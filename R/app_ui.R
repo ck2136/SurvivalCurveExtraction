@@ -26,26 +26,46 @@ app_ui <- function() {
       
       # Sidebar Menus
       dashboardSidebar(
-        sidebarMenu(
-          menuItem("Introduction", tabName = "dashboard", icon = icon("dashboard")),
-          # menuItem("Extraction and Error Check", tabName = "extractData", icon = icon("th")),
-          menuItem("Data Input and Summary", tabName = "data1", icon = icon("th"),
-                   collapsesible = 
-                     menuSubItem('random1', tabName = 'random1'),
-                   menuSubItem('Data Input', tabName = 'data'),
-                   menuSubItem('Data Check', tabName = 'datacheck'),
-                   menuSubItem('KM estimate', tabName = 'datasum')
-          ),
-          menuItem('Results', tabName = 'results', icon = icon('th'), 
-                   collapsible = 
-                     menuSubItem('random', tabName = 'random'),
-                   menuSubItem('Parameter Estimates', tabName = 'regresult'),
-                   menuSubItem('Fit Statistics', tabName = 'diag'),
-                   menuSubItem('Plots', tabName = 'plot')
-          ),
-          menuItem("Software Info", tabName = "softInfo", icon = icon("th"))
-          
+        conditionalPanel("output.data1exists == true && output.data2exists == true",
+                         sidebarMenu(id = "sidbarmenu",
+                                     menuItem("Introduction", tabName = "dashboard", icon = icon("dashboard")),
+                                     # menuItem("Extraction and Error Check", tabName = "extractData", icon = icon("th")),
+                                     menuItem("Data Input and Summary", tabName = "data1", icon = icon("th"),
+                                              collapsesible = 
+                                                menuSubItem('random1', tabName = 'random1'),
+                                              menuSubItem('Data Input', tabName = 'data'),
+                                              menuSubItem('Data Check', tabName = 'datacheck'),
+                                              menuSubItem('KM estimate', tabName = 'datasum')
+                                     ),
+                                     menuItem('Results', tabName = 'results', icon = icon('th'), 
+                                              collapsible = 
+                                                menuSubItem('random', tabName = 'random'),
+                                              menuSubItem('Parameter Estimates', tabName = 'regresult'),
+                                              menuSubItem('Fit Statistics', tabName = 'diag'),
+                                              menuSubItem('Plots', tabName = 'plot')
+                                     ),
+                                     menuItem("Software Info", tabName = "softInfo", icon = icon("th"))
+                                     
+                         )
+                           
+        ),
+        conditionalPanel("output.data1exists != true || output.data2exists != true",
+                         sidebarMenu(id = "sidbarmenu",
+                                     menuItem("Introduction", tabName = "dashboard", icon = icon("dashboard")),
+                                     # menuItem("Extraction and Error Check", tabName = "extractData", icon = icon("th")),
+                                     menuItem("Data Input and Summary", tabName = "data1", icon = icon("th"),
+                                              collapsesible = 
+                                                menuSubItem('random1', tabName = 'random1'),
+                                              menuSubItem('Data Input', tabName = 'data'),
+                                              menuSubItem('Data Check', tabName = 'datacheck'),
+                                              menuSubItem('KM estimate', tabName = 'datasum')
+                                     ),
+                                     menuItem("Software Info", tabName = "softInfo", icon = icon("th"))
+                                     
+                         )
+                           
         )
+        
       ),
       
       # Body of the Dashboard
