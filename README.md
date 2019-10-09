@@ -203,6 +203,11 @@ plot(df1edited$Time, df1edited$`S(t)`, xlab = "t", ylab = "S(t)", main = "Data C
 
 <img src="man/figures/README-unnamed-chunk-5-1.png" width="100%" />
 
+For convenience, the `monotone_check()` function has been implemented in
+the shinyapp so if the user doesn’t want to deal with it manually, the
+application will deal with it foryou. (The user should still do a data
+check to make sure that the \(S(t)\) are monotone decreasing).
+
 Once the data has been checked for monotone decreasing, we can go ahead
 and use the cleaned `df1edited` file as our first file indicated by
 Guyot et al. The next **.csv** file needs to look like below:
@@ -277,8 +282,41 @@ server. Click to access
 [shinyapps.io](https://pharmacoecon.shinyapps.io/SurvivalCurveExtraction)
 
 In the Introduction tab there is a guideline that everyone should be
-able to follow. If there are any questions please do not hesitate to
-contact [me](mailto:chong.kim@ucdenver.edu)
+able to follow.
+
+![](inst/app/www/main.png)
+
+The introduction is short and should be read everytime to reinforce the
+requirements for the extraction of the survival parameter estimates, the
+assumptions, and the workflow.
+
+In the `Data Input and Summary` tab, we can enter our two `.csv` files
+created. The [`/data-raw/`]() folder should have the files
+`digitized_data.csv` and `digitized_nrisk.csv` for tutorial purposes.
+Select the appropriate columns that represent \(S(t)\) and \(t\). The
+numbes of events are \(102\) in the original study but you may play
+around with that value to see how the parameters change.
+
+*Note:* You will also notice that the `Results` tabe will show up once
+you enter in both `.csv` files.
+
+![](inst/app/www/datainput.png)
+
+The `Results` tab will show
+
+1.  Parameter estimates
+2.  Fit Statistics
+3.  Plots
+
+With appropriate (monotone decreasing data that is sensible) data, the
+desired outcomes should be achieved.
+
+![](inst/app/www/parest.png)
+
+## Contact
+
+If there are any questions please do not hesitate to contact
+[me](mailto:chong.kim@ucdenver.edu)
 
 ## Code of Conduct
 
