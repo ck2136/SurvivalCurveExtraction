@@ -490,7 +490,7 @@ app_server <- function(input, output,session) {
     ptab
   })
   
-  output$parest <- renderDataTable({
+  output$parest <- renderTable({
     est()
   })
   
@@ -524,7 +524,7 @@ app_server <- function(input, output,session) {
     # data.frame(t(aictable))
   })
   
-  output$fitstat <- renderDataTable({
+  output$fitstat <- renderTable({
     fitstats()
   })
   

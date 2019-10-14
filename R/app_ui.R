@@ -256,7 +256,7 @@ app_ui <- function() {
                   fluidRow(
                     box(
                       h3("Survival Distribution Parameters"),
-                      fluidRow( dataTableOutput("parest"))
+                      fluidRow( tableOutput("parest"))
                       ,width = 12
                     )
                     
@@ -273,7 +273,7 @@ app_ui <- function() {
                   fluidRow(
                     box(
                       h3("Fit Statistics"),
-                      fluidRow( dataTableOutput("fitstat"))
+                      fluidRow( tableOutput("fitstat"))
                       ,width = 12
                     )
                   )
