@@ -490,12 +490,61 @@ app_server <- function(input, output,session) {
     ptab
   })
   
-  output$parest <- renderDataTable({
+  # Estimate and ConfInt
+  output$parest <- renderTable({
     est()
   })
   
-  # Estimate and ConfInt
   
+  
+  # Variance Covariance Matrix
+  output$vcovmat <- renderTable({
+    
+    fit1 <- expfl()
+    fit2 <- weibfl()
+    fit3 <- lnormfl() 
+    fit4 <- llogfl()
+    fit5 <- gompert()
+    fit6 <- gengam()
+    fit7 <- splinefl()
+    
+    vcovmat <- vcov(fit1) %>% data.frame %>%
+      mutate(Distribution = "Exponential") %>%
+      tibble::rownames_to_column(var="Parameter") %>%
+      select(3,1:2) %>%
+      bind_rows(
+        vcov(fit2) %>% data.frame %>%
+          mutate(Distribution = "Weibull") %>%
+          tibble::rownames_to_column(var="Parameter")  %>%
+          select(4,1:3)
+      ) %>%
+      bind_rows(
+        vcov(fit3) %>% data.frame %>%
+          mutate(Distribution = "Log-normal") %>%
+          tibble::rownames_to_column(var="Parameter")  %>%
+          select(4,1:3)
+      ) %>%
+      bind_rows(
+        vcov(fit4) %>% data.frame %>%
+          mutate(Distribution = "Log-logistic") %>%
+          tibble::rownames_to_column(var="Parameter")  %>%
+          select(4,1:3)
+      ) %>%
+      bind_rows(
+        vcov(fit6) %>% data.frame %>%
+          mutate(Distribution = "Generalized-Gamma") %>%
+          tibble::rownames_to_column(var="Parameter")  %>%
+          select(5,1:4) 
+      ) %>%
+      bind_rows(
+        vcov(fit7) %>% data.frame %>%
+          mutate(Distribution = "Spline") %>%
+          tibble::rownames_to_column(var="Parameter")  %>%
+          select((ncol(vcov(fit7) %>% data.frame)+2),1:(ncol(vcov(fit7) %>% data.frame)+1))
+      )
+    
+    vcovmat
+  })
   
   
   # AIC/BIC fit statistics
@@ -524,7 +573,7 @@ app_server <- function(input, output,session) {
     # data.frame(t(aictable))
   })
   
-  output$fitstat <- renderDataTable({
+  output$fitstat <- renderTable({
     fitstats()
   })
   
