@@ -25,6 +25,7 @@ usethis::use_package( "plotly" ) # To call each time you need a new package
 usethis::use_package( "ggplot2" ) # To call each time you need a new package
 usethis::use_package( "ggfortify" ) # To call each time you need a new package
 usethis::use_package( "survminer" ) # To call each time you need a new package
+usethis::use_package( "openxlsx" ) # To call each time you need a new package
 
 ## 2.3 Add tests
 

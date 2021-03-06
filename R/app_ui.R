@@ -265,7 +265,8 @@ app_ui <- function() {
                   fluidRow(
                     box(
                       h3("Covariance Matrix"),
-                      fluidRow( tableOutput("vcovmat"))
+                      fluidRow( tableOutput("vcovmat")),
+                      fluidRow( downloadButton('downloadvcov', "Download"))
                       ,width = 12
                     )
                     
